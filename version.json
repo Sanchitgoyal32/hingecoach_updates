@@ -1,0 +1,8 @@
+{
+  "versionCode": 1,
+  "versionName": "1.0",
+  "downloadUrl": "https://github.com/Sanchitgoyal32/hingecoach_updates/releases/download/v1.0/app-debug.apk",
+  "updateMessage": "New version available! Better replies, faster matching.",
+  "whatsNew": "- AI now learns from your successful matches\n- Profile scanning for personalized replies\n- Tone control: Flirty, Funny, or Confident\n- Bug fixes and performance improvements",
+  "forceUpdate": false
+}
