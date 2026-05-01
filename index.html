@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>MatchCoach — AI-Powered Replies for Dating Apps</title>
+<meta name="description" content="AI reads their dating profile and writes personalized, witty replies that actually get matches. Free floating bubble for Hinge, Bumble & Tinder.">
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700&family=Playfair+Display:wght@700&display=swap" rel="stylesheet">
+<style>
+:root{--pink:#E84393;--coral:#FF6B6B;--peach:#FFF0F0;--dark:#1A1A2E;--gold:#DAA520;--warm:#FFFAF5;--muted:#666}
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'DM Sans',sans-serif;color:var(--dark);background:var(--warm);overflow-x:hidden}
+.hero{background:linear-gradient(135deg,#FF6B6B 0%,#E84393 40%,#C44569 100%);display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:48px 20px 40px;position:relative;overflow:hidden}
+.hero::before{content:'';position:absolute;top:-50%;left:-50%;width:200%;height:200%;background:radial-gradient(ellipse at 30% 50%,rgba(255,255,255,0.08) 0%,transparent 60%);animation:fl 8s ease-in-out infinite;pointer-events:none}
+@keyframes fl{0%,100%{transform:translate(0,0)}50%{transform:translate(30px,-20px)}}
+.hero-logo{width:80px;height:80px;background:rgba(255,255,255,0.15);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:36px;margin-bottom:16px;animation:fu .5s ease .05s both}
+.hero h1{font-family:'Playfair Display',serif;font-size:clamp(32px,7vw,56px);color:white;line-height:1.1;margin-bottom:10px;animation:fu .5s ease .1s both}
+.hero h1 span{color:var(--gold)}
+.hero>p{font-size:clamp(14px,2.5vw,17px);color:rgba(255,255,255,0.9);max-width:440px;line-height:1.5;margin-bottom:20px;animation:fu .5s ease .15s both}
+.btn{display:inline-flex;align-items:center;gap:10px;background:white;color:var(--pink);font-size:16px;font-weight:700;padding:14px 32px;border-radius:60px;text-decoration:none;transition:all .3s;box-shadow:0 6px 24px rgba(0,0,0,0.12);position:relative;z-index:2}
+.btn:hover{transform:translateY(-2px);box-shadow:0 10px 32px rgba(0,0,0,0.18)}
+.apps{display:flex;gap:12px;margin-top:16px;animation:fu .5s ease .2s both}
+.apps span{background:rgba(255,255,255,0.15);padding:6px 14px;border-radius:20px;font-size:12px;color:white;font-weight:500}
+.nums{display:flex;gap:28px;margin-top:18px;animation:fu .5s ease .25s both}
+.nums .n{color:white;text-align:center}
+.nums .nv{font-size:22px;font-weight:700}
+.nums .nl{font-size:11px;opacity:0.75}
+.trust{background:var(--dark);padding:10px 16px;text-align:center;color:rgba(255,255,255,0.65);font-size:12px}
+.trust b{color:#4CAF50}
+.rvw{padding:28px 0 20px;overflow:hidden}
+.rvw .lbl{font-size:11px;font-weight:700;color:var(--pink);text-transform:uppercase;letter-spacing:2px;text-align:center;margin-bottom:4px}
+.rvw h2{font-family:'Playfair Display',serif;font-size:clamp(20px,4vw,30px);text-align:center;margin-bottom:14px;padding:0 16px}
+.co{position:relative;width:100%;overflow:hidden}
+.ct{display:flex;gap:12px;padding:0 16px;transition:transform .5s cubic-bezier(.25,.1,.25,1);will-change:transform}
+.ct.drag{transition:none}
+.rv{flex:0 0 260px;background:white;padding:18px;border-radius:14px;box-shadow:0 2px 12px rgba(232,67,147,0.06);user-select:none;-webkit-user-select:none}
+.rv-s{color:var(--gold);font-size:13px;letter-spacing:1px;margin-bottom:6px}
+.rv-t{font-size:13px;color:#444;line-height:1.45;margin-bottom:10px;font-style:italic}
+.rv-w{display:flex;align-items:center;gap:8px}
+.rv-a{width:30px;height:30px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;color:white;flex-shrink:0}
+.rv-a.m{background:linear-gradient(135deg,#6C5CE7,#a29bfe)}
+.rv-a.f{background:linear-gradient(135deg,var(--coral),var(--pink))}
+.rv-n{font-size:12px;font-weight:700}
+.rv-m{font-size:10px;color:var(--muted)}
+.dots{display:flex;justify-content:center;gap:5px;margin-top:12px}
+.dots .d{width:7px;height:7px;border-radius:50%;background:#DDD;transition:all .3s}
+.dots .d.on{background:var(--pink);width:18px;border-radius:4px}
+.mcta{text-align:center;padding:16px;background:var(--peach)}
+.mcta .btn{font-size:14px;padding:12px 28px;animation:none}
+.mcta p{margin-top:6px;font-size:11px;color:var(--muted)}
+.sec{padding:28px 16px;max-width:960px;margin:0 auto}
+.lbl{font-size:11px;font-weight:700;color:var(--pink);text-transform:uppercase;letter-spacing:2px;margin-bottom:6px}
+h2{font-family:'Playfair Display',serif;font-size:clamp(20px,4vw,30px);color:var(--dark);margin-bottom:12px;line-height:1.2}
+.hiw{background:var(--peach)}
+.steps{display:grid;gap:8px;margin-top:14px}
+.st{display:flex;gap:12px;align-items:flex-start;background:white;padding:14px;border-radius:12px;box-shadow:0 1px 6px rgba(232,67,147,0.04)}
+.st-n{flex-shrink:0;width:32px;height:32px;background:linear-gradient(135deg,var(--coral),var(--pink));border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:700;color:white}
+.st h3{font-size:13px;font-weight:700;margin-bottom:2px}
+.st p{font-size:12px;color:var(--muted);line-height:1.4}
+.feats{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;margin-top:14px}
+.ft{background:white;padding:16px;border-radius:14px;border:1px solid #F0E6E6}
+.ft-i{font-size:22px;margin-bottom:6px}
+.ft h3{font-size:12px;font-weight:700;margin-bottom:3px}
+.ft p{font-size:11px;color:var(--muted);line-height:1.4}
+.comp{margin-top:14px;background:white;border-radius:14px;padding:18px;border:1px solid #F0E6E6;overflow-x:auto}
+.comp table{width:100%;border-collapse:collapse;font-size:12px;min-width:400px}
+.comp th{text-align:left;padding:8px 10px;border-bottom:2px solid #F0E6E6;font-size:11px;color:var(--muted)}
+.comp td{padding:8px 10px;border-bottom:1px solid #F8F4F4}
+.comp tr td:first-child{font-weight:700}
+.comp .yes{color:#27AE60;font-weight:700}
+.comp .no{color:#E24B4A}
+.comp .mc{background:#FFF5F9}
+.priv{background:#F0FFF0;border-radius:14px;padding:22px 18px;text-align:center;max-width:600px;margin:0 auto;border:1.5px solid #C8E6C9}
+.priv .lk{font-size:28px;margin-bottom:6px}
+.priv h2{color:#2E7D32;font-size:18px;margin-bottom:6px}
+.priv>p{color:#555;font-size:12px;line-height:1.5}
+.pp{display:grid;grid-template-columns:1fr 1fr;gap:6px;margin-top:10px;text-align:left}
+.ppt{display:flex;align-items:center;gap:5px;font-size:11px;color:#2E7D32}
+.ck{flex-shrink:0;width:14px;height:14px;background:#4CAF50;border-radius:50%;display:flex;align-items:center;justify-content:center;color:white;font-size:8px}
+.inst{background:white;border-radius:14px;padding:20px;border:1.5px solid #F0E6E6;margin-top:14px}
+.inst h3{font-size:15px;font-weight:700;margin-bottom:12px;text-align:center}
+.is{display:flex;gap:10px;padding:8px 0;border-bottom:1px solid #F8F8F8}
+.is:last-child{border-bottom:none}
+.is-n{flex-shrink:0;width:20px;height:20px;background:var(--peach);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:700;color:var(--pink)}
+.is p{font-size:12px;line-height:1.4;color:#444}
+.is strong{color:var(--dark)}
+.faq{margin-top:14px}
+.fq{border-bottom:1px solid #EEE;padding:12px 0}
+.fq-q{font-size:13px;font-weight:700;cursor:pointer;display:flex;justify-content:space-between;align-items:center}
+.fq-q::after{content:'+';font-size:18px;color:var(--pink);transition:transform .3s}
+.fq-q.op::after{transform:rotate(45deg)}
+.fq-a{font-size:12px;color:var(--muted);line-height:1.5;max-height:0;overflow:hidden;transition:max-height .3s,padding .3s}
+.fq-a.op{max-height:200px;padding-top:6px}
+.cta{background:linear-gradient(135deg,#FF6B6B,#E84393);padding:36px 16px;text-align:center}
+.cta h2{color:white;font-size:clamp(18px,4vw,26px);margin-bottom:6px}
+.cta p{color:rgba(255,255,255,0.85);font-size:13px;margin-bottom:16px}
+footer{background:var(--dark);padding:20px 16px;text-align:center;color:rgba(255,255,255,0.4);font-size:10px;line-height:1.6}
+footer a{color:var(--pink);text-decoration:none}
+@keyframes fu{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:translateY(0)}}
+@media(min-width:768px){.hero{padding:64px 40px 52px}.sec{padding:36px 40px}.feats{grid-template-columns:repeat(3,1fr)}.steps{grid-template-columns:1fr 1fr}.rv{flex:0 0 300px}.pp{grid-template-columns:1fr 1fr 1fr}.priv{padding:28px 32px}.inst{padding:28px}}
+@media(min-width:1100px){.hero h1{font-size:56px}.sec{max-width:1000px}}
+@media(max-width:480px){.hero{padding:36px 16px 32px}.nums{gap:16px}.feats{grid-template-columns:1fr}.pp{grid-template-columns:1fr}.sec{padding:22px 14px}}
+</style>
+</head>
+<body>
+
+<nav style="background:rgba(26,26,46,0.95);padding:10px 20px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:100;backdrop-filter:blur(10px)">
+    <div style="display:flex;align-items:center;gap:8px">
+        <div style="width:28px;height:28px;background:linear-gradient(135deg,#E84393,#FD79A8);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:14px">&#x26A1;</div>
+        <span style="color:white;font-size:16px;font-weight:700;font-family:'DM Sans',sans-serif">MatchCoach</span>
+    </div>
+    <a href="https://play.google.com/store/apps/details?id=com.matchcoach.app" style="background:var(--pink);color:white;font-size:12px;font-weight:600;padding:7px 16px;border-radius:20px;text-decoration:none;font-family:'DM Sans',sans-serif">Download</a>
+</nav>
+
+<div class="hero">
+    <div class="hero-logo">&#x26A1;</div>
+    <h1>Never Run Out of<br>Good <span>Replies</span></h1>
+    <p>AI reads their profile and writes personalized replies that actually get matches. Floating bubble. Three options. One tap to copy.</p>
+    <div class="btn" style="background:rgba(255,255,255,0.6);cursor:default;pointer-events:none">&#x26A1; Launching Soon on Google Play</div>
+    <div class="apps">
+        <span>&#x1F49C; Hinge</span>
+        <span>&#x1F41D; Bumble</span>
+        <span>&#x1F525; Tinder</span>
+    </div>
+    <div class="nums">
+        <div class="n"><div class="nv">3</div><div class="nl">Replies per profile</div></div>
+        <div class="n"><div class="nv">&lt;5s</div><div class="nl">To generate</div></div>
+        <div class="n"><div class="nv">100%</div><div class="nl">Free</div></div>
+    </div>
+</div>
+<div class="trust"><b>&#x1F512;</b> No keyboard access needed &bull; No scary permissions &bull; Images stay on your device</div>
+
+<div class="rvw">
+    <div class="lbl">What people are saying</div>
+    <h2>Real people, real matches</h2>
+    <div class="co"><div class="ct" id="tk">
+        <div class="rv"><div class="rv-s">&#9733;&#9733;&#9733;&#9733;&#9733;</div><div class="rv-t">"Went from 1 match a week to 4-5. The replies sound like me, not cringe AI garbage."</div><div class="rv-w"><div class="rv-a m">A</div><div><div class="rv-n">A., 24, M</div><div class="rv-m">Delhi</div></div></div></div>
+        <div class="rv"><div class="rv-s">&#9733;&#9733;&#9733;&#9733;&#9733;</div><div class="rv-t">"The floating bubble is genius. No switching apps. Screenshot, tap, copy, paste. Done."</div><div class="rv-w"><div class="rv-a f">P</div><div><div class="rv-n">P., 23, F</div><div class="rv-m">Mumbai</div></div></div></div>
+        <div class="rv"><div class="rv-s">&#9733;&#9733;&#9733;&#9733;&#9734;</div><div class="rv-t">"Got 3 dates in the first week. Hinglish mode is fire for Indian dating apps."</div><div class="rv-w"><div class="rv-a m">R</div><div><div class="rv-n">R., 26, M</div><div class="rv-m">Bangalore</div></div></div></div>
+        <div class="rv"><div class="rv-s">&#9733;&#9733;&#9733;&#9733;&#9733;</div><div class="rv-t">"Was paying ₹2400/month for Rizz AI. This is free and the bubble works better."</div><div class="rv-w"><div class="rv-a m">S</div><div><div class="rv-n">S., 22, M</div><div class="rv-m">Pune</div></div></div></div>
+        <div class="rv"><div class="rv-s">&#9733;&#9733;&#9733;&#9733;&#9733;</div><div class="rv-t">"Every reply is personalized. She said 'wow no one's ever noticed that before' 😂"</div><div class="rv-w"><div class="rv-a m">V</div><div><div class="rv-n">V., 25, M</div><div class="rv-m">Hyderabad</div></div></div></div>
+        <div class="rv"><div class="rv-s">&#9733;&#9733;&#9733;&#9733;&#9734;</div><div class="rv-t">"The more I dislike bad replies, the better it gets. It actually learns my vibe."</div><div class="rv-w"><div class="rv-a f">M</div><div><div class="rv-n">M., 27, F</div><div class="rv-m">Gurgaon</div></div></div></div>
+        <div class="rv"><div class="rv-s">&#9733;&#9733;&#9733;&#9733;&#9733;</div><div class="rv-t">"Works on Bumble too. Sends multiple screenshots for better context. Smart."</div><div class="rv-w"><div class="rv-a m">K</div><div><div class="rv-n">K., 28, M</div><div class="rv-m">Chennai</div></div></div></div>
+        <div class="rv"><div class="rv-s">&#9733;&#9733;&#9733;&#9733;&#9733;</div><div class="rv-t">"No scary keyboard permission like Keys AI. Just a simple bubble. Love it."</div><div class="rv-w"><div class="rv-a f">N</div><div><div class="rv-n">N., 21, F</div><div class="rv-m">Kolkata</div></div></div></div>
+        <div class="rv"><div class="rv-s">&#9733;&#9733;&#9733;&#9733;&#9733;</div><div class="rv-t">"Friend told me about this. Got 2 matches same evening. Confident tone is fire."</div><div class="rv-w"><div class="rv-a m">D</div><div><div class="rv-n">D., 23, M</div><div class="rv-m">Jaipur</div></div></div></div>
+        <div class="rv"><div class="rv-s">&#9733;&#9733;&#9733;&#9733;&#9733;</div><div class="rv-t">"Doesn't give generic pickup lines. References their actual profile. Real conversations."</div><div class="rv-w"><div class="rv-a f">T</div><div><div class="rv-n">T., 25, F</div><div class="rv-m">Noida</div></div></div></div>
+    </div></div>
+    <div class="dots" id="dots"></div>
+</div>
+
+<div class="mcta">
+    <div class="btn" style="background:rgba(232,67,147,0.3);color:white;cursor:default;pointer-events:none">&#x26A1; Launching Soon &mdash; Stay Tuned</div>
+    <p>Android &bull; 7MB &bull; No sign-up &bull; No keyboard access</p>
+</div>
+
+<div class="sec hiw">
+    <div class="lbl">How it works</div>
+    <h2>Matched in 60 seconds</h2>
+    <div class="steps">
+        <div class="st"><div class="st-n">1</div><div><h3>Start the bubble</h3><p>Tap "Start Bubble" in MatchCoach. A floating &#x26A1; appears on screen.</p></div></div>
+        <div class="st"><div class="st-n">2</div><div><h3>Screenshot a profile</h3><p>Open Hinge, Bumble or Tinder. See someone you like? Screenshot their profile.</p></div></div>
+        <div class="st"><div class="st-n">3</div><div><h3>Tap the bubble</h3><p>Select your screenshots, pick a tone &mdash; Funny, Flirty, Bold or Hinglish.</p></div></div>
+        <div class="st"><div class="st-n">4</div><div><h3>Copy &amp; paste</h3><p>3 personalized replies appear. Tap one to copy. Long-press to paste in the dating app.</p></div></div>
+    </div>
+</div>
+
+<div class="sec">
+    <div class="lbl">Why it works</div>
+    <h2>Not your average AI chatbot</h2>
+    <div class="feats">
+        <div class="ft"><div class="ft-i">&#x26A1;</div><h3>Floating bubble</h3><p>Works right on top of any dating app. No switching needed.</p></div>
+        <div class="ft"><div class="ft-i">&#x1F4F7;</div><h3>Multi-screenshot</h3><p>Select multiple screenshots for better profile context.</p></div>
+        <div class="ft"><div class="ft-i">&#x1F3AF;</div><h3>Reads THEIR profile</h3><p>References their specific prompts and interests.</p></div>
+        <div class="ft"><div class="ft-i">&#x1F9E0;</div><h3>Learns your style</h3><p>Dislike bad replies. AI adapts to your preferences over time.</p></div>
+        <div class="ft"><div class="ft-i">&#x1F3AD;</div><h3>4 tones</h3><p>Funny, Flirty, Bold, or Hinglish. Different energy for different people.</p></div>
+        <div class="ft"><div class="ft-i">&#x1F512;</div><h3>No scary permissions</h3><p>No keyboard access. Just overlay + photo. That's it.</p></div>
+    </div>
+</div>
+
+<div class="sec" style="padding-top:8px">
+    <div class="lbl">vs competitors</div>
+    <h2>Why MatchCoach wins</h2>
+    <div class="comp">
+        <table>
+            <tr><th>Feature</th><th class="mc">MatchCoach</th><th>Rizz AI</th><th>Keys AI</th></tr>
+            <tr><td>Price</td><td class="mc yes">Free</td><td class="no">$7/week</td><td class="no">$7/week</td></tr>
+            <tr><td>Floating bubble</td><td class="mc yes">&#x2713; Yes</td><td class="no">&#x2717; No</td><td class="no">&#x2717; No</td></tr>
+            <tr><td>Scary permissions</td><td class="mc yes">None</td><td>Minimal</td><td class="no">Keyboard access</td></tr>
+            <tr><td>Hinglish</td><td class="mc yes">&#x2713; Yes</td><td class="no">&#x2717; No</td><td class="no">&#x2717; No</td></tr>
+            <tr><td>Multi-screenshot</td><td class="mc yes">&#x2713; Yes</td><td class="no">&#x2717; No</td><td class="no">&#x2717; No</td></tr>
+            <tr><td>Learns your style</td><td class="mc yes">&#x2713; Yes</td><td>Basic</td><td>Basic</td></tr>
+        </table>
+    </div>
+</div>
+
+<div class="sec" style="padding-top:8px">
+    <div class="priv">
+        <div class="lk">&#x1F512;</div>
+        <h2>Your privacy is sacred</h2>
+        <p>Your data is yours. Images stay on your phone.</p>
+        <div class="pp">
+            <div class="ppt"><div class="ck">&#x2713;</div>No keyboard access</div>
+            <div class="ppt"><div class="ck">&#x2713;</div>All data local</div>
+            <div class="ppt"><div class="ck">&#x2713;</div>No account needed</div>
+            <div class="ppt"><div class="ck">&#x2713;</div>No data shared</div>
+            <div class="ppt"><div class="ck">&#x2713;</div>Images never stored</div>
+            <div class="ppt"><div class="ck">&#x2713;</div>Simple overlay only</div>
+        </div>
+    </div>
+</div>
+
+<div class="sec" style="padding-top:8px">
+    <div class="lbl">Setup</div>
+    <h2>2-minute install</h2>
+    <div class="inst">
+        <h3>Get started in 4 steps</h3>
+        <div class="is"><div class="is-n">1</div><p><strong>Download</strong> &mdash; Get MatchCoach from Google Play Store. ~7MB.</p></div>
+        <div class="is"><div class="is-n">2</div><p><strong>Permissions</strong> &mdash; Enable "Display over other apps" (simple toggle) and photo access.</p></div>
+        <div class="is"><div class="is-n">3</div><p><strong>Start Bubble</strong> &mdash; Tap the button. A floating &#x26A1; bubble appears on your screen.</p></div>
+        <div class="is"><div class="is-n">4</div><p><strong>Screenshot &amp; tap</strong> &mdash; Screenshot any dating profile, tap the bubble, pick a reply!</p></div>
+    </div>
+</div>
+
+<div class="sec" style="padding-top:8px">
+    <div class="lbl">FAQ</div>
+    <div class="faq">
+        <div class="fq"><div class="fq-q" onclick="this.classList.toggle('op');this.nextElementSibling.classList.toggle('op')">Is this safe?</div><div class="fq-a">Yes. No keyboard access needed. Only uses "display over apps" (like Messenger chat heads) and photo access to read screenshots. All data stays on your phone.</div></div>
+        <div class="fq"><div class="fq-q" onclick="this.classList.toggle('op');this.nextElementSibling.classList.toggle('op')">Will Hinge/Bumble/Tinder ban me?</div><div class="fq-a">No. MatchCoach doesn't interact with dating apps at all. It reads your screenshots and you manually copy-paste replies. The dating app sees you typing normally.</div></div>
+        <div class="fq"><div class="fq-q" onclick="this.classList.toggle('op');this.nextElementSibling.classList.toggle('op')">Is it really free?</div><div class="fq-a">Yes! First 5 replies are completely free. After that, watch a quick ad to continue. No subscriptions, no hidden charges.</div></div>
+        <div class="fq"><div class="fq-q" onclick="this.classList.toggle('op');this.nextElementSibling.classList.toggle('op')">How is this different from Rizz AI or Keys AI?</div><div class="fq-a">MatchCoach is free (they charge $7/week), uses a floating bubble (no app switching), supports Hinglish, and doesn't need keyboard access. Better UX, zero cost.</div></div>
+        <div class="fq"><div class="fq-q" onclick="this.classList.toggle('op');this.nextElementSibling.classList.toggle('op')">Works on iPhone?</div><div class="fq-a">Not yet. Android only for now. iOS doesn't allow floating bubbles over other apps.</div></div>
+        <div class="fq"><div class="fq-q" onclick="this.classList.toggle('op');this.nextElementSibling.classList.toggle('op')">What is Hinglish mode?</div><div class="fq-a">Replies in a natural mix of Hindi and English &mdash; the way young Indians actually text. Perfect for Indian dating apps. Automatically detected if your phone is set to India.</div></div>
+        <div class="fq"><div class="fq-q" onclick="this.classList.toggle('op');this.nextElementSibling.classList.toggle('op')">Does it work for everyone?</div><div class="fq-a">Absolutely. Works for all genders. Upload your profile screenshots to personalize replies to your style.</div></div>
+    </div>
+</div>
+
+<div class="cta">
+    <h2>Your next match is one tap away</h2>
+    <p>Smarter replies. Better matches. Zero cost.</p>
+    <div class="btn" style="cursor:default;pointer-events:none">&#x26A1; Launching Soon on Google Play</div>
+</div>
+
+<footer>
+    Not affiliated with Hinge, Bumble, Tinder or Match Group.<br>
+    Made with &#x2764; in India &bull; <a href="mailto:matchcoachapp@gmail.com">Contact</a> &bull; <a href="https://sanchitgoyal32.github.io/mathcoach-privacy/">Privacy Policy</a> &bull; <a href="https://sanchitgoyal32.github.io/mathcoach-privacy/child-safety.html">Child Safety</a>
+    <br>&copy; 2026 MatchCoach
+</footer>
+
+<script>
+var tk=document.getElementById('tk'),dc=document.getElementById('dots'),cw=272,tc=tk.querySelectorAll('.rv').length,cur=0,at,sx=0,dr=false,dp=0;
+var td=Math.max(tc-Math.floor(window.innerWidth/cw)+1,1);
+for(var i=0;i<Math.min(td,8);i++){var d=document.createElement('div');d.className='d'+(i===0?' on':'');d.onclick=(function(j){return function(){go(j)}})(i);dc.appendChild(d)}
+function go(i){cur=i;if(cur>=td)cur=0;if(cur<0)cur=td-1;tk.style.transform='translateX(-'+cur*cw+'px)';dc.querySelectorAll('.d').forEach(function(d,j){d.className='d'+(j===cur%Math.min(td,8)?' on':'')})}
+function sa(){at=setInterval(function(){go(cur+1)},3500)}
+function pa(){clearInterval(at)}
+tk.addEventListener('touchstart',function(e){pa();sx=e.touches[0].clientX;dr=true;dp=cur*cw;tk.classList.add('drag')},{passive:true});
+tk.addEventListener('touchmove',function(e){if(!dr)return;tk.style.transform='translateX(-'+(dp+(sx-e.touches[0].clientX))+'px)'},{passive:true});
+tk.addEventListener('touchend',function(e){if(!dr)return;dr=false;tk.classList.remove('drag');var df=sx-e.changedTouches[0].clientX;Math.abs(df)>40?go(cur+(df>0?1:-1)):go(cur);sa()});
+tk.addEventListener('mousedown',function(e){pa();sx=e.clientX;dr=true;dp=cur*cw;tk.classList.add('drag');e.preventDefault()});
+document.addEventListener('mousemove',function(e){if(!dr)return;tk.style.transform='translateX(-'+(dp+(sx-e.clientX))+'px)'});
+document.addEventListener('mouseup',function(e){if(!dr)return;dr=false;tk.classList.remove('drag');var df=sx-e.clientX;Math.abs(df)>40?go(cur+(df>0?1:-1)):go(cur);sa()});
+sa();document.addEventListener('visibilitychange',function(){document.hidden?pa():sa()});
+</script>
+</body>
+</html>
